@@ -11,39 +11,74 @@ if (process.env.HTTP_PROXY !== undefined && process.env.HTTP_PROXY !== null) {
   }
 }
 
-exports.config = {
-  directConnect: true,
+if (process.env.BUILD_NUMBER == undefined) {
+  exports.config = {
+    directConnect: true,
 
-  allScriptsTimeout: 80000,
+    allScriptsTimeout: 80000,
 
-  specs: [
-    'test/e2e/*.js'
-  ],
+    specs: [
+      'test/e2e/*.js'
+    ],
 
-  capabilities: {
-    browserName: 'chrome',
-    proxy: proxy
-  },
+    capabilities: {
+      browserName: 'chrome',
+      proxy: proxy
+    },
 
-  baseUrl: 'http://localhost:3000',
+    baseUrl: 'http://localhost:3000',
 
-  framework: 'jasmine2',
+    framework: 'jasmine2',
 
-  jasmineNodeOpts: {
-    showColors: true,
-    defaultTimeoutInterval: 90000
-  },
+    jasmineNodeOpts: {
+      showColors: true,
+      defaultTimeoutInterval: 90000
+    },
 
-  onPrepare: function () {
-    var jasmineReporters = require('jasmine-reporters')
-    jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-      consolidateAll: true,
-      savePath: 'build/reports/e2e_results'
-    }))
+    onPrepare: function () {
+      var jasmineReporters = require('jasmine-reporters')
+      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+        consolidateAll: true,
+        savePath: 'build/reports/e2e_results'
+      }))
 
-    // Get cookie consent popup out of the way
-    browser.get('/#')
-    browser.manage().addCookie({ name: 'cookieconsent_status', value: 'dismiss' })
+      // Get cookie consent popup out of the way
+      browser.get('/#')
+      browser.manage().addCookie({ name: 'cookieconsent_status', value: 'dismiss' })
+    }
+  }
+} else {
+  exports.config = {
+    directConnect: false,
+    seleniumAddress: 'http://selenium:4444/wd/hub',
+    allScriptsTimeout: 80000,
+    specs: [
+      'test/e2e/*.js',
+      
+    ],
+    capabilities: {
+      browserName: 'chrome',
+      proxy: {
+        proxyType: 'manual',
+        httpProxy: 'http://zap:8888'
+      }
+    },
+    baseUrl: 'http://juiceshop.com:3000',
+    framework: 'jasmine2',
+    jasmineNodeOpts: {
+      showColors: true,
+      defaultTimeoutInterval: 90000
+    },
+    onPrepare: function () {
+      var jasmineReporters = require('jasmine-reporters')
+      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+        consolidateAll: true,
+        savePath: 'build/reports/e2e_results'
+      }))
+      // Get cookie consent popup out of the way
+      browser.get('/#')
+      browser.manage().addCookie({ name: 'cookieconsent_status', value: 'dismiss' })
+    }
   }
 }
 
