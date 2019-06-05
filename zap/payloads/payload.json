@@ -1,0 +1,12 @@
+{
+  "email": "root@localhost",
+  "password": "halamadrid",
+  "passwordRepeat": "halamadrid",
+  "securityQuestion": {
+    "id": 1,
+    "question": "Your eldest siblings middle name?",
+    "createdAt": "2019-05-16T09:44:52.085Z",
+    "updatedAt": "2019-05-16T09:44:52.085Z"
+  },
+  "securityAnswer": "123456"
+}
