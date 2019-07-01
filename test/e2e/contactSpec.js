@@ -122,42 +122,6 @@ describe('/#/contact', () => {
     protractor.expect.challengeSolved({ challenge: 'Steganography Tier 1' })
   })
 
-  describe('challenge "zeroStars"', () => {
-    it('should be possible to post feedback with zero stars by double-clicking rating widget', () => {
-      browser.executeAsyncScript(() => {
-        var callback = arguments[arguments.length - 1] // eslint-disable-line
-        var xhttp = new XMLHttpRequest()
-        var captcha
-        xhttp.onreadystatechange = function () {
-          if (this.status === 200) {
-            captcha = JSON.parse(this.responseText)
-            sendPostRequest(captcha)
-          }
-        }
-
-        xhttp.open('GET', 'http://localhost:3000/rest/captcha/', true)
-        xhttp.setRequestHeader('Content-type', 'text/plain')
-        xhttp.send()
-
-        function sendPostRequest (_captcha) {
-          var xhttp = new XMLHttpRequest()
-          xhttp.onreadystatechange = function () {
-            if (this.status === 201) {
-              console.log('Success')
-              callback()
-            }
-          }
-
-          xhttp.open('POST', 'http://localhost:3000/api/Feedbacks', true)
-          xhttp.setRequestHeader('Content-type', 'application/json')
-          xhttp.send(JSON.stringify({"captchaId": _captcha.captchaId, "captcha": `${_captcha.answer}`, "comment": "Comment", "rating": 0})) // eslint-disable-line
-        }
-      })
-    })
-
-    protractor.expect.challengeSolved({ challenge: 'Zero Stars' })
-  })
-
   describe('challenge "captchaBypass"', () => {
     it('should be possible to post 10 or more customer feedbacks in less than 10 seconds', () => {
       for (var i = 0; i < 11; i++) {
