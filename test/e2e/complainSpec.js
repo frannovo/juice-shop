@@ -34,32 +34,4 @@ describe('/#/complain', () => {
     protractor.expect.challengeSolved({ challenge: 'Upload Size' })
   })
 
-  describe('challenge "uploadType"', () => {
-    it('should be possible to upload files with other extension than .pdf directly through backend', () => {
-      browser.waitForAngularEnabled(false)
-      browser.executeScript(() => {
-        const data = new FormData()
-        const blob = new Blob([ 'test' ], { type: 'application/x-msdownload' })
-        data.append('file', blob, 'invalidTypeForClient.exe')
-
-        const request = new XMLHttpRequest()
-        request.open('POST', '/file-upload')
-        request.send(data)
-      })
-      browser.driver.sleep(1000)
-      browser.waitForAngularEnabled(true)
-    })
-    protractor.expect.challengeSolved({ challenge: 'Upload Type' })
-  })
-
-  describe('challenge "xxeFileDisclosure"', () => {
-    it('should be possible to retrieve file from Windows server via .xml upload with XXE attack', () => {
-      complaintMessage.sendKeys('XXE File Exfiltration Windows!')
-      file.sendKeys(path.resolve('test/files/xxeForWindows.xml'))
-      submitButton.click()
-    })
-    protractor.expect.challengeSolved({ challenge: 'Deprecated Interface' })
-  })
-
-
 })
