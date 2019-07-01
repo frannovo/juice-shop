@@ -122,20 +122,6 @@ describe('/#/contact', () => {
     protractor.expect.challengeSolved({ challenge: 'Steganography Tier 1' })
   })
 
-  describe('challenge "captchaBypass"', () => {
-    it('should be possible to post 10 or more customer feedbacks in less than 10 seconds', () => {
-      for (var i = 0; i < 11; i++) {
-        comment.sendKeys('Spam #' + i)
-        rating.click()
-        submitButton.click()
-        browser.sleep(200)
-        solveNextCaptcha() // first CAPTCHA was already solved in beforeEach
-      }
-    })
-
-    protractor.expect.challengeSolved({ challenge: 'CAPTCHA Bypass Tier 1' })
-  })
-
   describe('challenge "supplyChainAttack"', () => {
     it('should be possible to post GitHub issue URL reporting malicious eslint-scope package as feedback', () => {
       comment.sendKeys('Turn on 2FA! Now!!! https://github.com/eslint/eslint-scope/issues/39')
